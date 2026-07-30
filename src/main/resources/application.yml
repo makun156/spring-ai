@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: spring-ai
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  ai:
+    openai:
+      api-key: sk-7b12f7f5607d424eb1efce4a8ef93492
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      chat:
+        model: qwen3.7-plus
+        extra-body:
+          enable_thinking: false
+    deepseek:
+      chat:
+        model: deepseek-v4-flash
+        extra-body:
+          enable_thinking: false
+      api-key: sk-7b12f7f5607d424eb1efce4a8ef93492
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
