@@ -9,22 +9,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("ai")
-public class AiController {
+@RequestMapping("structOutput")
+public class StructOutputController {
     @Autowired
     ChatClient chatClient;
 
-    @GetMapping("block")
-    public String hi(@RequestParam(defaultValue = "你好") String question) {
-        return chatClient.prompt().user(question).call().content();
+    @GetMapping(value = "block")
+    public String block(@RequestParam(defaultValue = "你好") String question) {
+        Story story=chatClient.prompt()
+                .user(question)
+                .call()
+                .entity(Story.class);
+        return story.toString();
     }
-
-    @GetMapping(value = "stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> stream(@RequestParam(defaultValue = "你好") String question) {
-        return chatClient.prompt().user(question).advisors(advisorSpec -> advisorSpec.params(Map.of("custom1", "custom1", "custom2", "custom2"))).stream().content();
-    }
-
+    public record Story(String name, List<String> stories){}
 }

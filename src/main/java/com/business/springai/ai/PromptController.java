@@ -1,6 +1,8 @@
 package com.business.springai.ai;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +14,20 @@ import reactor.core.publisher.Flux;
 import java.util.Map;
 
 @RestController
-@RequestMapping("ai")
-public class AiController {
+@RequestMapping("prompt")
+public class PromptController {
     @Autowired
     ChatClient chatClient;
 
-    @GetMapping("block")
-    public String hi(@RequestParam(defaultValue = "你好") String question) {
-        return chatClient.prompt().user(question).call().content();
-    }
-
     @GetMapping(value = "stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> stream(@RequestParam(defaultValue = "你好") String question) {
-        return chatClient.prompt().user(question).advisors(advisorSpec -> advisorSpec.params(Map.of("custom1", "custom1", "custom2", "custom2"))).stream().content();
+        return chatClient.prompt()
+                .system("你是一个全能的法律小助手,只能回答关于法律的知识，其余问题一律拒绝回答")
+                .user(question)
+                .advisors(
+                        advisorSpec -> advisorSpec.params(Map.of("custom1", "custom1"))
+                )
+                .stream()
+                .content();
     }
-
 }
