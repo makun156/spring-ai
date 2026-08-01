@@ -2,12 +2,10 @@ package com.business.springai.config;
 
 import com.business.springai.advisor.CustomAdvisor1;
 import com.business.springai.advisor.CustomAdvisor2;
-
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.context.annotation.Bean;
@@ -16,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AiConfig {
     @Bean
-    public ChatMemory chatMemory() {
+    public ChatMemory chatMemory(RedisChatMemoryRepository repository) {
         return MessageWindowChatMemory
                 .builder()
-                .chatMemoryRepository(new InMemoryChatMemoryRepository())
+                .chatMemoryRepository(repository)
                 .maxMessages(15)
                 .build();
     }
