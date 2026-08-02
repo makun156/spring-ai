@@ -40,6 +40,7 @@ spring:
         collection-name: spring_ai_store
         initialize-schema: true
         embedding-dimension: 1024
+
 logging:
   level:
     org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG

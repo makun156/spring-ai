@@ -29,9 +29,9 @@ public class EmbController {
     @GetMapping("add")
     public Object add(@RequestParam(defaultValue = "我喜欢看电影") String question){
         vectorStore.add(List.of(Document.builder()
-                .id(java.util.UUID.randomUUID().toString())
+                .id(UUID.randomUUID().toString())
                 .text(question)
-                .metadata(java.util.Map.of("id", java.util.UUID.randomUUID().toString(),"question",question))
+                .metadata(java.util.Map.of("id", UUID.randomUUID().toString(),"question",question))
                 .build()));
         return "success";
     }
